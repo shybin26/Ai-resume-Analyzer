@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>Analysis History</h1>
+            <p>A log of all resumes processed by the application.</p>
+            <a href="/">Analyze a New Resume</a>
+        </header>
+
+        <main class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Filename</th>
+                        <th>Score</th>
+                        <th>Date Analyzed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for analysis in analyses %}
+                    <tr>
+                        <td>{{ analysis.resume_filename }}</td>
+                        <td>{{ analysis.score|round(1) }}%</td>
+                        <td>{{ analysis.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+    </div>
+</body>
+</html>

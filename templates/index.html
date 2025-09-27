@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">✨</div>
+                <div class="header-text">
+                    <h1>AI Resume Analyzer</h1>
+                    <p>Optimize your resume with AI-powered insights</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Upload Form -->
+            <div class="upload-section" id="uploadSection">
+                <!-- Upload Resume Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            📤 Upload Your Resume
+                        </div>
+                        <div class="card-description">
+                            Upload your resume in PDF format for analysis
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="upload-area" id="uploadArea">
+                            <input type="file" id="resumeFile" accept=".pdf">
+                            <div class="upload-content" id="uploadContent">
+                                <div class="upload-icon">📄</div>
+                                <div class="upload-text">Drop your PDF resume here</div>
+                                <div class="upload-subtext">or click to browse files</div>
+                            </div>
+                            <div class="file-selected-info" id="fileSelectedInfo">
+                                <span>✅</span>
+                                <span id="fileName"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Description Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Job Description</div>
+                        <div class="card-description">
+                            Paste the job description you want to match your resume against
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="form-group">
+                            <label class="form-label" for="jobDescription">Job Description</label>
+                            <textarea 
+                                class="form-textarea" 
+                                id="jobDescription" 
+                                placeholder="Paste the complete job description here..."
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analyze Button -->
+                <button class="analyze-btn" id="analyzeBtn" disabled>
+                    <span>✨</span>
+                    <span>Analyze Resume</span>
+                </button>
+
+                <!-- Loading -->
+                <div class="loading" id="loadingSection">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="loading-spinner"></div>
+                            <h3>Analyzing your resume...</h3>
+                            <p>This may take a few moments</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <!-- Score Card -->
+                <div class="card">
+                    <div class="card-content score-card">
+                        <div class="score-circle">
+                            <div class="score-number" id="scoreNumber">78</div>
+                            <div class="score-icon">📈</div>
+                        </div>
+                        <div class="results-title">Resume Analysis Complete</div>
+                        <div class="results-subtitle">Here's your comprehensive resume analysis</div>
+                        <div class="badges">
+                            <div class="badge">Overall Score: <span id="overallScore">78</span>/100</div>
+                            <div class="badge">Job Match: <span id="matchScore">72</span>%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Grid -->
+                <div class="results-grid">
+                    <!-- Strengths -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title result-header strengths">
+                                ✅ Strengths
+                            </div>
+                        </div>
+                        <div class="card-content result-item">
+                            <ul class="result-list" id="strengthsList">
+                                <li>
+                                    <div class="result-bullet green"></div>
+                                    <span>Strong technical skills alignment</span>
+                                </li>
+                                <li>
+                                    <div class="result-bullet green"></div>
+                                    <span>Relevant work experience</span>
+                                </li>
+                                <li>
+                                    <div class="result-bullet green"></div>
+                                    <span>Good educational background</span>
+                                </li>
+                                <li>
+                                    <div class="result-bullet green"></div>
+                                    <span>Clear project demonstrations</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Areas for Improvement -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title result-header improvements">
+                                ⚠️ Areas for Improvement
+                            </div>
+                        </div>
+                        <div class="card-content result-item">
+                            <ul class="result-list" id="improvementsList">
+                                <li>
+                                    <div class="result-bullet orange"></div>
+                                    <span>Add more quantifiable achievements</span>
+                                </li>
+                                <li>
+                                    <div class="result-bullet orange"></div>
+                                    <span>Include specific metrics and results</span>
+                                </li>
+                                <li>
+                                    <div class="result-bullet orange"></div>
+                                    <span>Improve keyword optimization</span>
+                                </li>
+                                <li>
+                                    <div class="result-bullet orange"></div>
+                                    <span>Enhance soft skills presentation</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Missing Keywords -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Missing Keywords</div>
+                            <div class="card-description">
+                                Consider adding these keywords to improve ATS compatibility
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="keywords-grid" id="keywordsList">
+                                <div class="keyword-tag">Agile methodology</div>
+                                <div class="keyword-tag">Cloud computing</div>
+                                <div class="keyword-tag">Data analysis</div>
+                                <div class="keyword-tag">Team leadership</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Recommendations</div>
+                            <div class="card-description">
+                                Actionable steps to improve your resume
+                            </div>
+                        </div>
+                        <div class="card-content result-item">
+                            <ul class="result-list" id="recommendationsList">
+                                <li>
+                                    <div class="result-bullet blue"></div>
+                                    <span>Highlight specific achievements with numbers</span>
+                                </li>
+                                <li>
+                                    <div class="result-bullet blue"></div>
+                                    <span>Add relevant certifications</span>
+                                </li>
+                                <li>
+                                    <div class="result-bullet blue"></div>
+                                    <span>Include keywords from job description</span>
+                                </li>
+                                <li>
+                                    <div class="result-bullet blue"></div>
+                                    <span>Optimize for ATS scanning</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn-secondary" onclick="resetAnalysis()">
+                        Analyze Another Resume
+                    </button>
+                    <button class="analyze-btn">
+                        Download Detailed Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>© 2024 AI Resume Analyzer. Enhance your career prospects with AI-powered insights.</p>
+        </div>
+    </div>
+
+    <script>
+       // --- Get all the DOM elements we need to interact with ---
+const uploadArea = document.getElementById('uploadArea');
+const resumeFile = document.getElementById('resumeFile');
+const uploadContent = document.getElementById('uploadContent');
+const fileSelectedInfo = document.getElementById('fileSelectedInfo');
+const fileName = document.getElementById('fileName');
+const jobDescription = document.getElementById('jobDescription');
+const analyzeBtn = document.getElementById('analyzeBtn');
+const uploadSection = document.getElementById('uploadSection');
+const loadingSection = document.getElementById('loadingSection');
+const resultsSection = document.getElementById('resultsSection');
+
+let currentFile = null;
+
+// --- Event Listeners for file upload and button state ---
+resumeFile.addEventListener('change', handleFileSelect);
+uploadArea.addEventListener('dragenter', handleDrag);
+uploadArea.addEventListener('dragover', handleDrag);
+uploadArea.addEventListener('dragleave', handleDragLeave);
+uploadArea.addEventListener('drop', handleDrop);
+jobDescription.addEventListener('input', checkFormValidity);
+analyzeBtn.addEventListener('click', handleAnalyze);
+
+// Add event listener for the "Analyze Another" button if it exists
+const analyzeAnotherBtn = document.querySelector('.btn-secondary');
+if (analyzeAnotherBtn) {
+    analyzeAnotherBtn.addEventListener('click', resetAnalysis);
+}
+
+
+// --- Main analysis function ---
+async function handleAnalyze() {
+    if (!currentFile || !jobDescription.value.trim()) return;
+
+    // Show loading spinner and hide other sections
+    uploadSection.style.display = 'none';
+    loadingSection.classList.add('show');
+    resultsSection.classList.remove('show');
+
+    // Create a FormData object to send our file and text
+    const formData = new FormData();
+    formData.append('resume', currentFile);
+    formData.append('jd', jobDescription.value);
+
+    try {
+        // Use the 'fetch' API to send data to our Python backend
+        const response = await fetch('/analyze', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Take the data from the backend and put it on the page
+        populateResults(data);
+
+    } catch (error) {
+        console.error("Error during analysis:", error);
+        alert("An error occurred during analysis. Please try again.");
+        resetAnalysis(); // Reset to the upload form on error
+    } finally {
+        // Hide loading and show the results
+        loadingSection.classList.remove('show');
+        resultsSection.classList.add('show');
+    }
+}
+
+// --- Function to put data from Python into the HTML ---
+function populateResults(data) {
+    // Score Card
+    document.getElementById('scoreNumber').textContent = Math.round(data.score);
+    document.getElementById('overallScore').textContent = Math.round(data.score);
+    document.getElementById('matchScore').textContent = Math.round(data.score); // Assuming score is the match score
+
+    // Strengths List
+    const strengthsList = document.getElementById('strengthsList');
+    strengthsList.innerHTML = ''; // Clear placeholder content
+    if (data.summary) {
+        strengthsList.innerHTML += `<li><div class="result-bullet green"></div><span><b>AI Summary:</b> ${data.summary}</span></li>`;
+    }
+    if (data.experience) {
+        strengthsList.innerHTML += `<li><div class="result-bullet green"></div><span><b>Experience:</b> Approx. ${data.experience} years.</span></li>`;
+    }
+
+    // Improvements List
+    const improvementsList = document.getElementById('improvementsList');
+    improvementsList.innerHTML = ''; // Clear placeholder
+    if (data.grammar_report) {
+        improvementsList.innerHTML += `<li><div class="result-bullet orange"></div><span>${data.grammar_report}</span></li>`;
+    }
+    if (data.plagiarism_report && data.plagiarism_report.sentences.length > 0) {
+        improvementsList.innerHTML += `<li><div class="result-bullet orange"></div><span><b>Originality:</b> ${data.plagiarism_report.status}</span></li>`;
+    }
+    // You would add more items here for other reports like ATS tips
+
+}
+
+// --- All the helper functions for drag/drop and UI state ---
+function handleDrag(e) { e.preventDefault(); uploadArea.classList.add('drag-active'); }
+function handleDragLeave(e) { e.preventDefault(); uploadArea.classList.remove('drag-active'); }
+
+function handleDrop(e) {
+    e.preventDefault();
+    uploadArea.classList.remove('drag-active');
+    const files = e.dataTransfer.files;
+    if (files.length > 0 && files[0].type === 'application/pdf') {
+        currentFile = files[0];
+        resumeFile.files = files; // Important to update the file input
+        showFileSelected();
+    }
+}
+
+function handleFileSelect(e) {
+    if (e.target.files.length > 0) {
+        currentFile = e.target.files[0];
+        showFileSelected();
+    }
+}
+
+function showFileSelected() {
+    uploadContent.style.display = 'none';
+    fileSelectedInfo.classList.add('show');
+    fileName.textContent = currentFile.name;
+    uploadArea.classList.add('file-selected');
+    checkFormValidity();
+}
+
+function checkFormValidity() {
+    const hasFile = currentFile !== null;
+    const hasJobDescription = jobDescription.value.trim().length > 0;
+    analyzeBtn.disabled = !(hasFile && hasJobDescription);
+}
+
+function resetAnalysis() {
+    currentFile = null;
+    resumeFile.value = '';
+    jobDescription.value = '';
+    uploadContent.style.display = 'block';
+    fileSelectedInfo.classList.remove('show');
+    uploadArea.classList.remove('file-selected');
+    analyzeBtn.disabled = true;
+    uploadSection.style.display = 'block';
+    resultsSection.classList.remove('show');
+    loadingSection.classList.remove('show');
+}
+
+// Initialize button state on page load
+checkFormValidity();
+    </script>
+</body>
+</html>
