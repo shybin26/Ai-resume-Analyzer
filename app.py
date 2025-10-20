@@ -17,23 +17,19 @@ from resume_parser import extract_text_from_pdf
 
 app = Flask(__name__)
 
-# --- Database Configuration ---
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///analysis_history.db'
+# --- NEW: PostgreSQL Database Configuration ---
+# The DATABASE_URL is provided by Render. It falls back to a local SQLite
+# database if the variable isn't found (for local testing).
+database_url = os.environ.get('DATABASE_URL', 'sqlite:///analysis_history.db')
+
+# Heroku/Render use 'postgres://' but SQLAlchemy needs 'postgresql://'
+if database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-# --- End of Database Config ---
-
-# --- Database Model ---
-class Analysis(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    resume_filename = db.Column(db.String(200), nullable=False)
-    score = db.Column(db.Float, nullable=False)
-    full_report_json = db.Column(db.Text, nullable=False) 
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return f'<Analysis {self.id}: {self.resume_filename}>'
 # --- End of Database Model ---
 
 
